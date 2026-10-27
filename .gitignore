@@ -1,0 +1,7 @@
+dist/
+public/
+.vercel/
+site.tar.gz
+.env
+.env.*
+!.env.example

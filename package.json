@@ -1,0 +1,11 @@
+{
+  "name": "scopepay",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-vercel.mjs",
+    "validate": "node --check worker/index.js && node --check api/app.js",
+    "dev": "node scripts/dev.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
