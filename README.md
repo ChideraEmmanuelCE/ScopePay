@@ -10,7 +10,7 @@ A freelancer quote studio built for the PayPal AI Hackathon 2026. Turn a client 
 
 ## Current status
 
-Working sandbox prototype. Manual quotes, a clearly labelled illustrative sample, per-task estimates, USD totals, client review preview, browser-local quote saving, JSON export, and print/PDF are implemented. Server adapters for OpenAI and PayPal Orders v2 are implemented and tested with mocked providers. PayPal sandbox order creation has been verified on the original Sites deployment; buyer approval and completed capture remain to be verified. OpenAI requests have returned HTTP 429. The app does not claim to generate AI output or complete payments when credentials are absent.
+Working sandbox prototype. Manual quotes, a clearly labelled illustrative sample, per-task estimates, USD totals, client review preview, browser-local quote saving, JSON export, and print/PDF are implemented. Server adapters for Groq, OpenAI, and PayPal Orders v2 are implemented and tested with mocked providers. PayPal sandbox order creation has been verified on the original Sites deployment; buyer approval and completed capture remain to be verified. OpenAI requests have returned HTTP 429. The app does not claim to generate AI output or complete payments when credentials are absent.
 
 The Vercel interface is publicly accessible. PayPal sandbox authentication and order creation have also been verified on Vercel. This prototype is not yet ready for final hackathon submission: AI generation, buyer-approved capture, and the demo video remain unfinished. The review preview is not a shareable customer link. Devpost registration has been completed by the author.
 
@@ -21,19 +21,19 @@ The Vercel interface is publicly accessible. PayPal sandbox authentication and o
 3. Change the hourly rate from $40 to $50: the 30-hour sample should change from $1,200 to $1,500. Edit a deliverable and verify the total again.
 4. Select **Review proposal**. Save the quote, close the dialog, then open **My quotes** to reload it. Quotes are stored only in that browser.
 5. For a sandbox payment, review and approve the quote, continue to PayPal, sign in with a separate **sandbox Personal/buyer** account, approve, and return in the same tab. Use only test accounts. A completed capture must produce a receipt in ScopePay; a checkout page by itself does not prove payment completion.
-6. AI generation is currently blocked by provider access/quota and is deliberately excluded from the verified demo. Use your own funded OpenAI project to test the AI path locally, or wait until the hosted connection is restored.
+6. AI generation is currently blocked by provider access/quota and is deliberately excluded from the verified demo. Configure a Groq free-tier key or an OpenAI key to test the AI path. Groq support is implemented; live generation still needs verification with a valid key.
 
 For PayPal test accounts, use the Developer Dashboard's **Testing Tools / Sandbox Accounts** section. Use a Personal account as buyer and the sandbox app's Business account as seller. Never publish account passwords or API keys in a public repository or video.
 
 ### Run with your own credentials
 
-Download or clone this repository, use Node 22 or newer, and copy `.env.example` to an ignored `.env` file. Fill in your own OpenAI key and PayPal sandbox app credentials. Run:
+Download or clone this repository, use Node 22 or newer, and copy `.env.example` to an ignored `.env` file. Fill in a Groq key (free tier available) or an OpenAI key, plus PayPal sandbox app credentials. Run:
 
 ```sh
 node --env-file=.env scripts/dev.mjs
 ```
 
-Open http://localhost:5173. A dependency installation is not required. Never commit the populated `.env` file. Run `npm test` for six automated tests of pricing, payment safeguards, error handling, and Vercel routing; those tests use mocked provider responses.
+Open http://localhost:5173. A dependency installation is not required. Never commit the populated `.env` file. Run `npm test` for automated tests of pricing, payment safeguards, error handling, and Vercel routing; those tests use mocked provider responses.
 
 ## Run locally
 
@@ -47,7 +47,10 @@ Open http://localhost:5173. By default integrations are unconfigured. Use **Try 
 
 Set environment variables securely before running. Node can load a local ignored .env file with `node --env-file=.env scripts/dev.mjs`. Never commit credentials. For hosted Sites, configure these through runtime environment settings:
 
-- `OPENAI_API_KEY`: AI provider key, server-only.
+- `GROQ_API_KEY`: Groq key, server-only. Available from https://console.groq.com/keys. Remain on the Free plan to avoid paid usage; free quotas still apply.
+- `GROQ_MODEL`: optional, defaults to `llama-3.3-70b-versatile`.
+- `AI_PROVIDER`: optional `groq` or `openai`; otherwise Groq is preferred when its key is present. There is no automatic paid fallback.
+- `OPENAI_API_KEY`: alternative AI provider key, server-only.
 - `OPENAI_MODEL`: optional, defaults to `gpt-4.1-mini`.
 - `PAYPAL_CLIENT_ID`: your PayPal sandbox application client ID.
 - `PAYPAL_CLIENT_SECRET`: matching sandbox app secret, server-only.
@@ -76,7 +79,7 @@ The original Sites deployment is owner-private; the Vercel deployment is an acce
 
 The `api/app.js` adapter uses Node's Web Request/Response interface and passes only server environment variables to the existing application. `vercel.json` routes API requests to that adapter; `node scripts/build-vercel.mjs` generates the static UI in `public/`. No dependencies are required.
 
-Project: `ridea1/scopepay`. Configure `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `OPENAI_API_KEY` as Production secrets in Vercel, then redeploy. Saved Sites secrets cannot be read back through its configuration API and are not included in deployment files. Never use live PayPal credentials in this sandbox application. Vercel hosting does not resolve OpenAI account quota or billing errors.
+Project: `ridea1/scopepay`. Configure `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and either `GROQ_API_KEY` or `OPENAI_API_KEY` as Production secrets in Vercel, then redeploy. Saved Sites secrets cannot be read back through its configuration API and are not included in deployment files. Never use live PayPal credentials in this sandbox application. Vercel hosting does not resolve OpenAI account quota or billing errors.
 
 Quotes currently use USD only and do not calculate taxes. Estimates and timelines are proposals, not guarantees. Never place secrets or sensitive customer information into a sample or source file.
 
