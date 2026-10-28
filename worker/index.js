@@ -2,7 +2,7 @@ const PAYPAL = 'https://api-m.sandbox.paypal.com';
 const enc = new TextEncoder();
 function aiConfig(env){
  const provider=env.AI_PROVIDER||(env.GROQ_API_KEY?'groq':'openai');
- if(provider==='groq')return {name:'Groq',key:env.GROQ_API_KEY,keyName:'GROQ_API_KEY',model:env.GROQ_MODEL||'llama-3.3-70b-versatile',url:'https://api.groq.com/openai/v1/chat/completions'};
+ if(provider==='groq')return {name:'Groq',key:env.GROQ_API_KEY,keyName:'GROQ_API_KEY',model:env.GROQ_MODEL||'openai/gpt-oss-20b',url:'https://api.groq.com/openai/v1/chat/completions'};
  if(provider==='openai')return {name:'OpenAI',key:env.OPENAI_API_KEY,keyName:'OPENAI_API_KEY',model:env.OPENAI_MODEL||'gpt-4.1-mini',url:'https://api.openai.com/v1/chat/completions'};
  return {name:'Unconfigured'};
 }

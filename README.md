@@ -10,9 +10,9 @@ A freelancer quote studio built for the PayPal AI Hackathon 2026. Turn a client 
 
 ## Current status
 
-Working sandbox prototype. Manual quotes, a clearly labelled illustrative sample, per-task estimates, USD totals, client review preview, browser-local quote saving, JSON export, and print/PDF are implemented. Server adapters for Groq, OpenAI, and PayPal Orders v2 are implemented and tested with mocked providers. PayPal sandbox order creation has been verified on the original Sites deployment; buyer approval and completed capture remain to be verified. OpenAI requests have returned HTTP 429. The app does not claim to generate AI output or complete payments when credentials are absent.
+Working sandbox prototype. Manual quotes, a clearly labelled illustrative sample, per-task estimates, USD totals, client review preview, browser-local quote saving, JSON export, and print/PDF are implemented. Server adapters for Groq, OpenAI, and PayPal Orders v2 are implemented and tested with mocked providers. PayPal sandbox order creation has been verified on the original Sites deployment; buyer approval and completed capture remain to be verified. OpenAI requests have returned HTTP 429. Live AI generation through Groq using `openai/gpt-oss-20b` was verified on Vercel on October 28, 2026, including validated tasks and recomputed totals. The app does not claim to generate AI output or complete payments when credentials are absent.
 
-The Vercel interface is publicly accessible. PayPal sandbox authentication and order creation have also been verified on Vercel. This prototype is not yet ready for final hackathon submission: AI generation, buyer-approved capture, and the demo video remain unfinished. The review preview is not a shareable customer link. Devpost registration has been completed by the author.
+The Vercel interface is publicly accessible. PayPal sandbox authentication and order creation have also been verified on Vercel. This prototype is not yet ready for final hackathon submission: buyer-approved capture and the demo video remain unfinished. The review preview is not a shareable customer link. Devpost registration has been completed by the author.
 
 ## Judge quick start
 
@@ -21,7 +21,7 @@ The Vercel interface is publicly accessible. PayPal sandbox authentication and o
 3. Change the hourly rate from $40 to $50: the 30-hour sample should change from $1,200 to $1,500. Edit a deliverable and verify the total again.
 4. Select **Review proposal**. Save the quote, close the dialog, then open **My quotes** to reload it. Quotes are stored only in that browser.
 5. For a sandbox payment, review and approve the quote, continue to PayPal, sign in with a separate **sandbox Personal/buyer** account, approve, and return in the same tab. Use only test accounts. A completed capture must produce a receipt in ScopePay; a checkout page by itself does not prove payment completion.
-6. AI generation is currently blocked by provider access/quota and is deliberately excluded from the verified demo. Configure a Groq free-tier key or an OpenAI key to test the AI path. Groq support is implemented; live generation still needs verification with a valid key.
+6. Paste a project brief and select **Generate a scope**. Live Groq generation has been verified. Review every suggested task, hour estimate, assumption, and question before approving. Free-tier usage limits still apply; the sample and manual editor remain available if a limit is reached.
 
 For PayPal test accounts, use the Developer Dashboard's **Testing Tools / Sandbox Accounts** section. Use a Personal account as buyer and the sandbox app's Business account as seller. Never publish account passwords or API keys in a public repository or video.
 
@@ -48,7 +48,7 @@ Open http://localhost:5173. By default integrations are unconfigured. Use **Try 
 Set environment variables securely before running. Node can load a local ignored .env file with `node --env-file=.env scripts/dev.mjs`. Never commit credentials. For hosted Sites, configure these through runtime environment settings:
 
 - `GROQ_API_KEY`: Groq key, server-only. Available from https://console.groq.com/keys. Remain on the Free plan to avoid paid usage; free quotas still apply.
-- `GROQ_MODEL`: optional, defaults to `llama-3.3-70b-versatile`.
+- `GROQ_MODEL`: optional, defaults to `openai/gpt-oss-20b`.
 - `AI_PROVIDER`: optional `groq` or `openai`; otherwise Groq is preferred when its key is present. There is no automatic paid fallback.
 - `OPENAI_API_KEY`: alternative AI provider key, server-only.
 - `OPENAI_MODEL`: optional, defaults to `gpt-4.1-mini`.
