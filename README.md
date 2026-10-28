@@ -10,9 +10,9 @@ A freelancer quote studio built for the PayPal AI Hackathon 2026. Turn a client 
 
 ## Current status
 
-Working sandbox prototype. Manual quotes, a clearly labelled illustrative sample, per-task estimates, USD totals, client review preview, browser-local quote saving, JSON export, and print/PDF are implemented. Server adapters for Groq, OpenAI, and PayPal Orders v2 are implemented and tested with mocked providers. PayPal sandbox order creation has been verified on the original Sites deployment; buyer approval and completed capture remain to be verified. OpenAI requests have returned HTTP 429. Live AI generation through Groq using `openai/gpt-oss-20b` was verified on Vercel on October 28, 2026, including validated tasks and recomputed totals. The app does not claim to generate AI output or complete payments when credentials are absent.
+Working sandbox prototype. Manual quotes, a clearly labelled illustrative sample, per-task estimates, USD totals, client review preview, browser-local quote saving, JSON export, and print/PDF are implemented. Server adapters for Groq, OpenAI, and PayPal Orders v2 are implemented and tested with mocked providers. PayPal sandbox order creation has been verified on the original Sites deployment; buyer approval and a completed $180 capture were confirmed in the user-provided ScopePay screenshot on October 28, 2026. OpenAI requests have returned HTTP 429. Live AI generation through Groq using `openai/gpt-oss-20b` was verified on Vercel on October 28, 2026, including validated tasks and recomputed totals. The app does not claim to generate AI output or complete payments when credentials are absent.
 
-The Vercel interface is publicly accessible. PayPal sandbox authentication and order creation have also been verified on Vercel. This prototype is not yet ready for final hackathon submission: buyer-approved capture and the demo video remain unfinished. The review preview is not a shareable customer link. Devpost registration has been completed by the author.
+The Vercel interface is publicly accessible. PayPal sandbox authentication and order creation have also been verified on Vercel. This prototype is not yet ready for final hackathon submission: the demo video and final submission remain unfinished. The review preview is not a shareable customer link. Devpost registration has been completed by the author.
 
 ## Judge quick start
 
@@ -104,8 +104,13 @@ License: MIT. Built by Chidera Emmanuel Okpala with AI coding assistance.
 
 ## Diagnosing sandbox checkout
 
-On October 28, 2026, a live $1 sandbox order was accepted and its PayPal login page loaded. This verifies authentication and order creation, not buyer approval or payment capture. A hosted PayPal merchant error remains unresolved; the seller account's country, verification and limits have not been inspected.
+On October 28, 2026, a live $1 sandbox order was accepted and its PayPal login page loaded. This verifies authentication and order creation, not buyer approval or payment capture. The merchant error was resolved for the user after replacing the seller configuration and using a separate Personal buyer; the subsequent $180 sandbox payment completed. The precise original account restriction was not determined.
 
 In Connections, **Check last payment status** reads the current tab's signed checkout session and retrieves the order without capturing or changing it. It returns only the order status, amount, currency and merchant ID after verifying the signed order binding. It cannot read account-level transaction limits or restrictions. API failures now preserve safe PayPal issue codes and debug IDs while excluding raw account details, tokens and credentials.
 
 Use a Personal sandbox account as buyer and a separate verified Business sandbox account as seller. If the seller setup must be replaced, create a new sandbox Business account, create a sandbox REST app attached to it, and update both Production PayPal credentials in Vercel before redeploying. Existing orders belong to the previous seller; start a new checkout after changing credentials.
+
+
+## Payment receipts
+
+A successful, server-verified capture automatically opens the receipt dialog with the paid amount, project, optional client, PayPal capture (receipt) ID, order ID, and PayPal capture timestamp when available. It is labelled as a sandbox payment. Print / save PDF uses the browser print dialog. Close and reopen with View payment receipt, or use My quotes → Receipt in the same browser. Older saved completed payments are supported without inventing a payment date. Receipt availability depends on browser storage; this is not a public receipt verification service.
