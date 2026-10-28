@@ -100,3 +100,12 @@ Problem: freelancers receive vague briefs, manually turn them into scope and pri
 Demonstration: paste a brief; generate and edit scope; identify an unresolved question; review a USD quote; approve and complete a PayPal sandbox payment; show a verified receipt. Target video length: under three minutes.
 
 License: MIT. Built by Chidera Emmanuel Okpala with AI coding assistance.
+
+
+## Diagnosing sandbox checkout
+
+On October 28, 2026, a live $1 sandbox order was accepted and its PayPal login page loaded. This verifies authentication and order creation, not buyer approval or payment capture. A hosted PayPal merchant error remains unresolved; the seller account's country, verification and limits have not been inspected.
+
+In Connections, **Check last payment status** reads the current tab's signed checkout session and retrieves the order without capturing or changing it. It returns only the order status, amount, currency and merchant ID after verifying the signed order binding. It cannot read account-level transaction limits or restrictions. API failures now preserve safe PayPal issue codes and debug IDs while excluding raw account details, tokens and credentials.
+
+Use a Personal sandbox account as buyer and a separate verified Business sandbox account as seller. If the seller setup must be replaced, create a new sandbox Business account, create a sandbox REST app attached to it, and update both Production PayPal credentials in Vercel before redeploying. Existing orders belong to the previous seller; start a new checkout after changing credentials.

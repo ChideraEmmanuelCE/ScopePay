@@ -6,7 +6,7 @@ export default {
     const url = new URL(request.url);
     const route = url.searchParams.get('route');
     if (route) {
-      if (!['status', 'generate', 'orders', 'capture'].includes(route)) {
+      if (!['status', 'generate', 'orders', 'capture', 'checkout-status'].includes(route)) {
         return Response.json({ error: 'Not found' }, { status: 404 });
       }
       url.pathname = '/api/' + route;
