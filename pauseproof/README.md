@@ -1,4 +1,4 @@
-# PauseProof — Check before you trust
+# PauseProof — Website & scam warning checker
 
 **PauseProof** is a free, privacy-first consumer-safety web application inspired by documented social-media scams and recurring community complaints about fake stores, job offers, investment groups, rental listings, and impersonation.
 
@@ -84,3 +84,20 @@ The rules in `app.js` are self-contained and intentionally easy to audit. Propos
 - Does not fetch a submitted website, follow its links, process its content, execute code or submit scans to the historical scanning provider
 - SSRF-resistant routing through fixed public lookup endpoints, public-only domain validation, timeout and rate limiting
 - Smoke-tested against `example.com` and a fictional deceptive `paypal.com@evil.example` input
+
+## Live website scanner (version 3)
+
+The **Scan Website** tab runs actual passive lookups from a Vercel serverless API (`api/scan.mjs`) and shows factual, explainable findings:
+
+- **DNS** A/AAAA records through Google Public DNS
+- **Registration** age through public RDAP, when accessible
+- **Public scan history** through urlscan.io's search endpoint (only published historical scans; no new scan is submitted)
+- **URL structure checks** including deceptive userinfo/@ links, unusual suffixes, lookalike brand domains, recently registered domains, and misleading subdomains
+
+The input website is **never visited by PauseProof**, so this feature does not inspect current page contents, malware scripts, login forms, checkout behavior, or real merchant identity. User-supplied URLs are parsed on the server and only hostnames or registrable domains are forwarded to fixed lookup providers. The app does not record the site in its local case tracker automatically. Public providers may be unavailable or rate-limited.
+
+Risk labels deliberately use *strong warning signs*, *some warning signs*, or *not verified*. No scanner can guarantee a website is fake or legitimate. HTTPS, age, DNS, and public history alone are not a trust certification.
+
+The website is now designed in a **black/white monochrome palette**, with mobile-first layouts; the visual override is in `monochrome.css`.
+
+The service has a basic, in-memory per-instance request limiter, input length limits, and domain validation. For a high-traffic production deployment, use a shared rate limiter, structured abuse logging without URLs, metrics, and additional review of the public data providers and uptime dependencies.
