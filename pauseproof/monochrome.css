@@ -333,3 +333,6 @@ h1,h2,h3,h4{color:#191919}
  .mobile-nav button{font-size:8.5px}
  .website-check-row .check-icon{display:none}
 }
+
+/* Override legacy inline brand accent to ensure strictly monochrome branding. */
+.footer strong span,.brand-name span,.brand-dot,.brand span{color:#171717!important}
