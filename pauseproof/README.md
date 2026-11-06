@@ -40,7 +40,7 @@ All matching runs in the browser. Messages and URLs are never sent to a scanning
 
 ## Technical architecture
 
-- Static `index.html`, `styles.css`, `app.js`
+- Static `index.html`, `styles.css`, `design-v2.css`, `app.js`
 - Vanilla JavaScript, browser-native URL parsing, deterministic rule explanations
 - No server, account, persistent central database, API secrets or third-party JavaScript dependencies
 - Local storage for explicitly saved minimal case metadata
@@ -48,7 +48,7 @@ All matching runs in the browser. Messages and URLs are never sent to a scanning
 
 To run locally, start any static web server in this directory (e.g. `python3 -m http.server 8080`), then visit http://localhost:8080.
 
-Vercel deploy settings: **Other framework**, project root this directory, no build command. Deploy the three files as static assets.
+Vercel deploy settings: **Other framework**, project root this directory, no build command. Deploy the four app files as static assets.
 
 ## Roadmap for responsible scale
 
@@ -63,3 +63,12 @@ Vercel deploy settings: **Other framework**, project root this directory, no bui
 ### Contributing
 
 The rules in `app.js` are self-contained and intentionally easy to audit. Proposed patterns should include false-positive considerations and independently verifiable evidence.
+
+## Design v2 — mobile overhaul (November 2026)
+
+- Redesigned dark-green and citrus hero and clearer scanning-first information architecture
+- A true 3-column/two-row category grid on narrow phones; no horizontal carousel needed
+- Viewport-safe layouts, mobile navigation, improved input sizes and touch targets
+- Responsive coverage verified at approximately 320px and 390px mobile widths
+- Scanning and navigation smoke-tested against the live production domain
+- New styles kept in `design-v2.css` to preserve the existing safety-analysis logic
